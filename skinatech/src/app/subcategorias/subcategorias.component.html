@@ -1,0 +1,64 @@
+<h2>Gestión de Subcategorías</h2>
+
+<button *ngIf="rol === 'administrador'" (click)="abrirModalCrear()">Agregar Subcategoría</button>
+
+<table border="1" cellspacing="0" cellpadding="8">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Categoría</th>
+      <th>Estado</th>
+      <th *ngIf="rol === 'administrador'">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let subcat of subcategorias">
+      <td>{{ subcat.id }}</td>
+      <td>{{ subcat.nombre }}</td>
+      <td>{{ subcat.categoria_nombre || 'Sin categoría' }}</td>
+      <td>{{ subcat.estado }}</td>
+      <td *ngIf="rol === 'administrador'">
+        <button (click)="abrirModalEditar(subcat)">Editar</button>
+        <button *ngIf="subcat.estado === 'inactiva'" (click)="activarSubcategoria(subcat.id)">Activar</button>
+        <button *ngIf="subcat.estado === 'activa'" (click)="eliminarSubcategoria(subcat.id)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Modal Crear -->
+<div class="modal" *ngIf="mostrarModalCrear && rol === 'administrador'">
+  <div class="modal-content">
+    <h3>Nueva Subcategoría</h3>
+    <form (ngSubmit)="crearSubcategoria()">
+      <input [(ngModel)]="nuevaSubcategoria.nombre" name="nombre" placeholder="Nombre" required />
+      <select [(ngModel)]="nuevaSubcategoria.categoria_id" name="categoria_id" required>
+        <option [ngValue]="null" disabled>Seleccione categoría</option>
+        <option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre }}</option>
+      </select>
+      <div class="modal-actions">
+        <button type="submit">Guardar</button>
+        <button type="button" (click)="cerrarModalCrear()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Editar -->
+<div class="modal" *ngIf="mostrarModalEditar && rol === 'administrador'">
+  <div class="modal-content">
+    <h3>Editar Subcategoría</h3>
+    <form (ngSubmit)="guardarEdicion(editandoId!)">
+      <input [(ngModel)]="subcategoriaEditada.nombre" name="nombre_edit" required />
+      <select [(ngModel)]="subcategoriaEditada.categoria_id" name="categoria_id_edit" required>
+        <option [ngValue]="null" disabled>Seleccione categoría</option>
+        <option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre }}</option>
+      </select>
+      <div class="modal-actions">
+        <button type="submit">Guardar</button>
+        <button type="button" (click)="cerrarModalEditar()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

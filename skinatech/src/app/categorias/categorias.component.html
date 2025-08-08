@@ -1,0 +1,56 @@
+<h2>Gestión de Categorías</h2>
+
+<button *ngIf="rol === 'administrador'" (click)="abrirModalCrear()">Agregar Categoría</button>
+
+<table border="1" cellspacing="0" cellpadding="8">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Estado</th>
+      <th *ngIf="rol === 'administrador'">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let categoria of categorias">
+      <td>{{ categoria.id }}</td>
+      <td>{{ categoria.nombre }}</td>
+      <td>{{ categoria.estado }}</td>
+      <td *ngIf="rol === 'administrador'">
+        <button (click)="abrirModalEditar(categoria)">Editar</button>
+
+        <!-- Si está inactiva, mostrar botón para activar -->
+        <button *ngIf="categoria.estado === 'inactiva'" (click)="activarCategoria(categoria.id)">Activar</button>
+        <button *ngIf="categoria.estado === 'activa'" (click)="eliminarCategoria(categoria.id)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Modal Crear -->
+<div class="modal" *ngIf="mostrarModalCrear && rol === 'administrador'">
+  <div class="modal-content">
+    <h3>Nueva Categoría</h3>
+    <form (ngSubmit)="crearCategoria()">
+      <input [(ngModel)]="nuevaCategoria.nombre" name="nombre" placeholder="Nombre" required />
+      <div class="modal-actions">
+        <button type="submit">Guardar</button>
+        <button type="button" (click)="cerrarModalCrear()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Editar -->
+<div class="modal" *ngIf="mostrarModalEditar && rol === 'administrador'">
+  <div class="modal-content">
+    <h3>Editar Categoría</h3>
+    <form (ngSubmit)="guardarEdicion(editandoId!)">
+      <input [(ngModel)]="categoriaEditada.nombre" name="nombre_edit" required />
+      <div class="modal-actions">
+        <button type="submit">Guardar</button>
+        <button type="button" (click)="cerrarModalEditar()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="container">
+  <h2>Gestión de Productos</h2>
+  <button (click)="abrirModalCrear()">+ Nuevo Producto</button>
+
+  <table border="1" cellpadding="5">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Estado</th>
+        <th>Subcategoría</th>
+        <th>Cantidad</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let prod of productos">
+        <td>{{ prod.id }}</td>
+        <td>{{ prod.nombre }}</td>
+        <td>{{ prod.estado }}</td>
+        <td>{{ prod.subcategorias_con_cantidad[0]?.subcategoria_nombre }}</td>
+        <td>{{ prod.subcategorias_con_cantidad[0]?.cantidad }}</td>
+        <td>
+          <button (click)="abrirModalEditar(prod)">Editar</button>
+          <button (click)="eliminarProducto(prod.id)">Eliminar</button>
+          <button (click)="activarProducto(prod.id)">Activar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal Crear -->
+<div class="modal" *ngIf="mostrarModalCrear">
+  <div class="modal-content">
+    <h3>Nuevo Producto</h3>
+    <label>Nombre:</label>
+    <input [(ngModel)]="nuevaProducto.nombre" type="text" />
+
+    <label>Estado:</label>
+    <select [(ngModel)]="nuevaProducto.estado">
+      <option value="activa">Activa</option>
+      <option value="inactiva">Inactiva</option>
+    </select>
+
+    <label>Subcategoría:</label>
+    <select [(ngModel)]="nuevaProducto.subcategoria_id">
+      <option *ngFor="let sub of subcategorias" [value]="sub.id">
+        {{ sub.nombre }}
+      </option>
+    </select>
+
+    <label>Cantidad:</label>
+    <input [(ngModel)]="nuevaProducto.cantidad" type="number" />
+
+    <button (click)="crearProducto()">Guardar</button>
+    <button (click)="cerrarModalCrear()">Cancelar</button>
+  </div>
+</div>
+
+<!-- Modal Editar -->
+<div class="modal" *ngIf="mostrarModalEditar">
+  <div class="modal-content">
+    <h3>Editar Producto</h3>
+    <label>Nombre:</label>
+    <input [(ngModel)]="productoEditado.nombre" type="text" />
+
+    <label>Estado:</label>
+    <select [(ngModel)]="productoEditado.estado">
+      <option value="activa">Activa</option>
+      <option value="inactiva">Inactiva</option>
+    </select>
+
+    <label>Subcategoría:</label>
+    <select [(ngModel)]="productoEditado.subcategoria_id">
+      <option *ngFor="let sub of subcategorias" [value]="sub.id">
+        {{ sub.nombre }}
+      </option>
+    </select>
+
+    <label>Cantidad:</label>
+    <input [(ngModel)]="productoEditado.cantidad" type="number" />
+
+    <button (click)="guardarEdicion()">Guardar cambios</button>
+    <button (click)="cerrarModalEditar()">Cancelar</button>
+  </div>
+</div>
