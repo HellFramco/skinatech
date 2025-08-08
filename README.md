@@ -1,5 +1,6 @@
 # **Skinatech**
 > Plataforma con backend en **PHP (Yii2)** y frontend en **Angular**, diseñada para ofrecer un entorno rápido, modular y escalable.
+> url de produccion https://examen-ingreso.skinatech.com/~usuario46/skinatech/browser/
 
 ---
 
